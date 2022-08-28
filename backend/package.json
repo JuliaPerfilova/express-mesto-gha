@@ -1,0 +1,29 @@
+{
+  "name": "yandex-praktikum",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuliaPerfilova/express-mesto-gha.git"
+  },
+  "author": "Julia Perfilova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuliaPerfilova/express-mesto-gha/issues"
+  },
+  "homepage": "https://github.com/JuliaPerfilova/express-mesto-gha#readme",
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "mongoose": "^6.5.3"
+  }
+}
