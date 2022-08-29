@@ -4,7 +4,7 @@ const { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/stat
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch((err) => res.status(INTERNAL_SERVER_ERROR).send({ message: `Ошибка: ${err}` }));
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -14,11 +14,10 @@ module.exports.createCard = (req, res) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.status(BAD_REQUEST).send({ message: 'Ошибка валидации' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -33,11 +32,10 @@ module.exports.deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -56,11 +54,10 @@ module.exports.likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -79,10 +76,9 @@ module.exports.dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };

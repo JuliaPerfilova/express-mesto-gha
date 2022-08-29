@@ -4,7 +4,7 @@ const { BAD_REQUEST, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../utils/stat
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' }));
 };
 
 module.exports.getUserbyID = (req, res) => {
@@ -17,12 +17,15 @@ module.exports.getUserbyID = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+      if (err.name === 'ValidationError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка валидации' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
+      }
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -33,11 +36,10 @@ module.exports.createUser = (req, res) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+        res.status(BAD_REQUEST).send({ message: 'Ошибка валидации' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -53,12 +55,15 @@ module.exports.updateProfile = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+      if (err.name === 'ValidationError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка валидации' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
+      }
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
 
@@ -74,11 +79,14 @@ module.exports.updateAvatar = (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        res.status(BAD_REQUEST);
-      } else {
-        res.status(INTERNAL_SERVER_ERROR);
+      if (err.name === 'ValidationError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка валидации' });
+        return;
       }
-      res.send({ message: `Ошибка: ${err}` });
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send({ message: 'Ошибка: Некорректные данные' });
+        return;
+      }
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Ошибка' });
     });
 };
