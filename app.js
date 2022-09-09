@@ -1,8 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const router = require('./routes/users');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const { celebrate, Joi } = require('celebrate');
+const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
-const { NOT_FOUND } = require('./utils/statusCodes');
+const { login, createUser } = require('./controllers/users');
+const auth = require('./middlewares/auth');
+const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
 
@@ -14,22 +19,31 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '630b623617a6b7c58fe3f112',
-  };
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
-  next();
-});
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2),
+  }),
+}), login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().min(2).max(30),
+    password: Joi.string().required().min(2),
+  }),
+}), createUser);
 
-app.use('/users', router);
+app.use(auth);
 
+app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
-app.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: `${NOT_FOUND} - Страница не найдена` });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 });
