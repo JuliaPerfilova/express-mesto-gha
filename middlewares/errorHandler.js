@@ -6,4 +6,5 @@ module.exports = (err, req, res, next) => {
     .send({
       message: statusCode === 500 ? ERROR_CODES.INTERNAL_SERVER_ERROR : message,
     });
+  next();
 };
