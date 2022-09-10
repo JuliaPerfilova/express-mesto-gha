@@ -1,8 +1,6 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const { urlValidation } = require('../middlewares/validators');
-
 const router = express.Router();
 const {
   getUsers, getUserbyID, updateProfile, updateAvatar, getCurrentUser,
@@ -17,8 +15,6 @@ router.patch('/me', celebrate({
     about: Joi.string().required().min(2).max(30),
   }),
 }), updateProfile);
-router.patch('/me/avatar', celebrate({
-  avatar: Joi.string().min(2).custom(urlValidation),
-}), updateAvatar);
+router.patch('/me/avatar', updateAvatar);
 
 module.exports = router;
