@@ -57,14 +57,16 @@ module.exports.createUser = (req, res, next) => {
     about,
     avatar,
     email,
-    password,
   } = req.body;
 
-  bcrypt.hash(password, 10)
+  bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      (({ password, ...other }) => other)(user.toJSON());
+      res.send({ data: (({ password, ...other }) => other)(user.toJSON()) });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') next(new BadRequestError(ERROR_MESSAGES.WRONG_EMAIL));
       else next(err);

@@ -8,7 +8,7 @@ const cardRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
-const { urlValidation } = require('./middlewares/urlValidation');
+const { urlValidation, mailValidation } = require('./middlewares/validators');
 
 const { PORT = 3000 } = process.env;
 
@@ -35,7 +35,8 @@ app.post('/signup', celebrate({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().min(2).custom(urlValidation),
-    email: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().min(2).max(30)
+      .custom(mailValidation),
     password: Joi.string().required().min(2),
   }),
 }), createUser);
