@@ -64,7 +64,6 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      (({ password, ...other }) => other)(user.toJSON());
       res.send({ data: (({ password, ...other }) => other)(user.toJSON()) });
     })
     .catch((err) => {
