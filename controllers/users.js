@@ -13,15 +13,17 @@ module.exports.getUsers = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUserbyID = (req, res, next) => User.findById(req.params.userId)
-  .orFail(() => {
-    throw (new NotFoundError());
-  })
-  .then((user) => res.send({ data: user }))
-  .catch((err) => {
-    if (err.name === 'CastError') next(new BadRequestError());
-    else next(err);
-  });
+module.exports.getUserbyID = (req, res, next) => {
+  User.findById(req.params.userId)
+    .orFail(() => {
+      next(new NotFoundError());
+    })
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'CastError') next(new BadRequestError());
+      else next(err);
+    });
+};
 
 module.exports.getCurrentUser = (req, res, next) => User.findById(req.user._id)
   .orFail(() => {
