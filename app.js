@@ -9,7 +9,7 @@ const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const { urlValidation, mailValidation } = require('./middlewares/validators');
-const NotFoundError = require('./utils/errors/NotFoundError');
+// const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -50,7 +50,7 @@ app.use('/cards', cardRouter);
 
 /* app.use('/:other', (err, req, res, next) => {
   next(new NotFoundError('Несуществующий адрес страницы'));
-});*/
+}); */
 
 app.use(errors());
 app.use(errorHandler);
