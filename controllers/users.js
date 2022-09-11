@@ -4,6 +4,7 @@ const User = require('../models/user');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const BadRequestError = require('../utils/errors/BadRequestError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
+const ConflictError = require('../utils/errors/ConflictError');
 const { ERROR_MESSAGES } = require('../utils/errorConstants');
 
 module.exports.getUsers = (req, res, next) => {
@@ -67,8 +68,14 @@ module.exports.createUser = (req, res, next) => {
       res.send({ data: (({ password, ...other }) => other)(user.toJSON()) });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') next(new BadRequestError(ERROR_MESSAGES.WRONG_EMAIL));
-      else next(err);
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError(ERROR_MESSAGES.WRONG_EMAIL));
+      }
+      if (err.code === 11000) {
+        next(new ConflictError(ERROR_MESSAGES.CONFLICT));
+      } else {
+        next(err);
+      }
     });
 };
 
