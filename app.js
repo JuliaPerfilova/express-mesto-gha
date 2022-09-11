@@ -48,9 +48,9 @@ app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
-app.use('/:other', (err, req, res, next) => {
+/* app.use('/:other', (err, req, res, next) => {
   next(new NotFoundError('Несуществующий адрес страницы'));
-});
+});*/
 
 app.use(errors());
 app.use(errorHandler);
