@@ -31,8 +31,7 @@ module.exports.getCurrentUser = (req, res, next) => User.findById(req.user._id)
   })
   .then((user) => res.send({ data: user }))
   .catch((err) => {
-    if (err.name === 'CastError') next(new BadRequestError());
-    else next(err);
+    next(err);
   });
 
 module.exports.login = (req, res, next) => {
