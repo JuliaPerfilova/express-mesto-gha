@@ -11,6 +11,7 @@ module.exports.ERROR_MESSAGES = {
   BAD_REQUEST: 'Ваш браузер отправил запрос, который этот сервер не смог понять',
   WRONG_URL: 'Введен некорректный URL',
   WRONG_EMAIL: 'Введен некорректный Email',
+  WRONG_INPUT_DATA: 'Введены некорректные данные',
 
   CONFLICT: 'Этот ресурс уже существует в базе данных',
   EMAIL_IN_USE: 'Email уже используется',

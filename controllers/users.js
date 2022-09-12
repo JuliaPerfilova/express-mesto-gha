@@ -70,7 +70,7 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(ERROR_MESSAGES.WRONG_EMAIL));
+        next(new BadRequestError(ERROR_MESSAGES.WRONG_INPUT_DATA));
       }
       if (err.code === 11000) {
         next(new ConflictError(ERROR_MESSAGES.CONFLICT));
